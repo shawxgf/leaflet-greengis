@@ -1,6 +1,6 @@
 // Import stylesheets
 import './style.css';
-import { Map, TileLayer, LayerGroup} from 'leaflet';
+import { Map, TileLayer, LayerGroup, Control} from 'leaflet';
 
 // Write Javascript code!
 const map = new Map('map');
@@ -29,19 +29,29 @@ tdtLayer.addTo(map);
 
 map.setView([39.909186, 116.397411], 10);
 
-const items = document.getElementsByName('base')
-items.forEach(item => {
-  item.onclick = (evt) => {
-    switch (evt.target.value)
-    {
-      case 'amap':
-        tdtLayer.removeFrom(map);
-        amapLayer.addTo(map);
-        break;
-      case 'tdt':
-        amapLayer.removeFrom(map);
-        tdtLayer.removeFrom(map);
-        break;
-    }
-  }
-});
+// const items = document.getElementsByName('base')
+// items.forEach(item => {
+//   item.onclick = (evt) => {
+//     switch (evt.target.value)
+//     {
+//       case 'amap':
+//         tdtLayer.removeFrom(map);
+//         amapLayer.addTo(map);
+//         break;
+//       case 'tdt':
+//         amapLayer.removeFrom(map);
+//         tdtLayer.removeFrom(map);
+//         break;
+//     }
+//   }
+// });
+
+const layerControl = new Control.Layers(
+  {
+    高德: amapLayer,
+    天地图: tdtLayer
+  },
+  {},
+  { collapsed: false }
+);
+layerControl.addTo(map);

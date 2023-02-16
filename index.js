@@ -1,13 +1,14 @@
 // Import stylesheets
 import './style.css';
-import { Map, TileLayer, LayerGroup, Control} from 'leaflet';
+import { Map, TileLayer, LayerGroup, Control } from 'leaflet';
+
 
 // Write Javascript code!
 const map = new Map('map');
 
 const amapLayer = new TileLayer(
-  // 'http://wprd0{s}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=7',
-  'http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}',
+  'http://wprd0{s}.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&lang=zh_cn&size=1&scl=1&style=7',
+  // 'http://wprd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}',
   {
     subdomains: '1234'
   }

@@ -1,6 +1,6 @@
 // Import stylesheets
-// import './style.css';
-// import { Map, TileLayer, LayerGroup} from 'leaflet';
+import './style.css';
+import { Map, TileLayer, LayerGroup, Control} from 'leaflet';
 
 // Write Javascript code!
 const map = new Map('map');

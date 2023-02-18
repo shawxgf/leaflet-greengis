@@ -59,28 +59,33 @@ const layerControl = new Control.Layers(
 );
 layerControl.addTo(map);
 
-// 加载矢量svg
-const svg = '<svg t="1676634187815" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2776" width="200" height="200"><path d="M512 85.333333c-164.949333 0-298.666667 133.738667-298.666667 298.666667 0 164.949333 298.666667 554.666667 298.666667 554.666667s298.666667-389.717333 298.666667-554.666667c0-164.928-133.717333-298.666667-298.666667-298.666667z m0 448a149.333333 149.333333 0 1 1 0-298.666666 149.333333 149.333333 0 0 1 0 298.666666z" fill="#FF3D00" p-id="2777"></path></svg>'
 
-const marker = new Marker([39.909186, 116.397411], {
-  icon: new Icon({
-    // iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svg),
-    iconSize: [25, 41],
-    iconAnchor: [12.5, 41]
-  })
-});
+// 添加maker
+// const marker = new Marker([39.909186, 116.397411], {
+//   icon: new Icon({
+//     // iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+//     iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svg),
+//     iconSize: [25, 41],
+//     iconAnchor: [12.5, 41]
+//   })
+// });
 
-marker.addTo(map)
+// marker.addTo(map)
 
+// 加载医院和学校矢量svg
+const svgSchol = '<svg t="1676687667781" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4958" width="200" height="200"><path d="M512 128L42.666667 384l469.333333 256 384-209.493333V725.333333h85.333333V384M213.333333 562.346667v170.666666L512 896l298.666667-162.986667v-170.666666L512 725.333333l-298.666667-162.986666z" fill="" p-id="4959"></path></svg>'
 
+const svgHospital ='<svg t="1676687716942" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6107" width="200" height="200"><path d="M320 488v-80c0-13.254 10.746-24 24-24h80c13.254 0 24 10.746 24 24v80c0 13.254-10.746 24-24 24h-80c-13.254 0-24-10.746-24-24z m280 24h80c13.254 0 24-10.746 24-24v-80c0-13.254-10.746-24-24-24h-80c-13.254 0-24 10.746-24 24v80c0 13.254 10.746 24 24 24z m-152 168v-80c0-13.254-10.746-24-24-24h-80c-13.254 0-24 10.746-24 24v80c0 13.254 10.746 24 24 24h80c13.254 0 24-10.746 24-24z m152 24h80c13.254 0 24-10.746 24-24v-80c0-13.254-10.746-24-24-24h-80c-13.254 0-24 10.746-24 24v80c0 13.254 10.746 24 24 24z m360 248v72H64v-72c0-13.254 10.746-24 24-24h39V170.07C127 146.836 148.49 128 175 128H352V48c0-26.51 21.49-48 48-48h224c26.51 0 48 21.49 48 48v80h177c26.51 0 48 18.836 48 42.07V928H936c13.254 0 24 10.746 24 24zM223 926H448v-134c0-13.254 10.746-24 24-24h80c13.254 0 24 10.746 24 24v134h225V224H672v48c0 26.51-21.49 48-48 48H400c-26.51 0-48-21.49-48-48v-48H223v702zM596 128h-52V76a12 12 0 0 0-12-12h-40a12 12 0 0 0-12 12v52h-52a12 12 0 0 0-12 12v40a12 12 0 0 0 12 12h52v52a12 12 0 0 0 12 12h40a12 12 0 0 0 12-12V192h52a12 12 0 0 0 12-12V140a12 12 0 0 0-12-12z" p-id="6108"></path></svg>'
+
+// 包含医院和学校两种类型矢量数据
 const dataPoint = {
   "type": "FeatureCollection",
   "features": [
     {
       "type": "Feature",
       "properties": {
-        "NAME": "西北五环"
+        "NAME": "医院A",
+        "TYPE": "医院"
       },
       "geometry": {
         "type": "Point",
@@ -93,7 +98,8 @@ const dataPoint = {
     {
       "type": "Feature",
       "properties": {
-        "NAME": "东五环"
+        "NAME": "学校A",
+        "TYPE": "学校"
       },
       "geometry": {
         "type": "Point",
@@ -106,7 +112,8 @@ const dataPoint = {
     {
       "type": "Feature",
       "properties": {
-        "NAME": "南五环"
+        "NAME": "医院B",
+        "TYPE": "医院"
       },
       "geometry": {
         "type": "Point",
@@ -118,6 +125,7 @@ const dataPoint = {
     }
   ]
 };
+
 const dataPoly1 = {
   "type": "FeatureCollection",
   "features": [
@@ -196,15 +204,38 @@ const dataPoly2 = {
   ]
 }
 
+// const glayer = new GeoJSON(dataPoint, {
+//   pointToLayer: (geoJsonPoint, latlng) => {
+//     return new Marker(latlng, {
+//       icon: new Icon({
+//         iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svg),
+//         iconSize: [32, 32],
+//         iconAnchor: [16, 32]
+//       })
+//     });
+//   }
+// });
+
 const glayer = new GeoJSON(dataPoint, {
   pointToLayer: (geoJsonPoint, latlng) => {
-    return new Marker(latlng, {
-      icon: new Icon({
-        iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svg),
-        iconSize: [32, 32],
-        iconAnchor: [16, 32]
-      })
-    });
+    switch (geoJsonPoint.properties['TYPE']) {
+      case "医院":
+      return new Marker(latlng, {
+        icon: new Icon({
+          iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svgHospital),
+          iconSize: [16, 16],
+          iconAnchor: [8, 16]
+          })
+      });
+      case "学校":
+        return new Marker(latlng, {
+          icon: new Icon({
+            iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svgSchol),
+            iconSize: [16, 16],
+            iconAnchor: [8, 16]
+          })
+        });
+    }
   }
 });
 

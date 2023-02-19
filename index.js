@@ -216,6 +216,33 @@ const dataPoly2 = {
 //   }
 // });
 
+// const glayer = new GeoJSON(dataPoint, {
+//   pointToLayer: (geoJsonPoint, latlng) => {
+//     switch (geoJsonPoint.properties['TYPE']) {
+//       case "医院":
+//       return new Marker(latlng, {
+//         icon: new Icon({
+//           iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svgHospital),
+//           iconSize: [16, 16],
+//           iconAnchor: [8, 16]
+//           })
+//       });
+//       case "学校":
+//         return new Marker(latlng, {
+//           icon: new Icon({
+//             iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svgSchol),
+//             iconSize: [16, 16],
+//             iconAnchor: [8, 16]
+//           })
+//         });
+//     }
+//   }
+// }).bindTooltip((item) => {
+//   return item.feature.properties['NAME'];
+//   },
+//   {permanent: true}
+// );
+
 const glayer = new GeoJSON(dataPoint, {
   pointToLayer: (geoJsonPoint, latlng) => {
     switch (geoJsonPoint.properties['TYPE']) {
@@ -226,7 +253,7 @@ const glayer = new GeoJSON(dataPoint, {
           iconSize: [16, 16],
           iconAnchor: [8, 16]
           })
-      });
+      }).bindTooltip(geoJsonPoint.properties['NAME'], {permanent: true});
       case "学校":
         return new Marker(latlng, {
           icon: new Icon({
@@ -234,10 +261,11 @@ const glayer = new GeoJSON(dataPoint, {
             iconSize: [16, 16],
             iconAnchor: [8, 16]
           })
-        });
+        }).bindTooltip(geoJsonPoint.properties['NAME'], {permanent: true});
     }
   }
 });
+
 
 glayer.addTo(map);
 
@@ -280,3 +308,4 @@ check2.onchange = (evt) => {
     player2.removeFrom(map);
   }
 }
+
